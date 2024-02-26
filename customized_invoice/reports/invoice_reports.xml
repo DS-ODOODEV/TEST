@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+            <!--inherits the default invoice report  and override its name -->
+      <report 
+            id="account.account_invoices"
+            model="account.move"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="customized_invoice.report_invoice"
+            file="customized_invoice.report_invoice"
+      />
+
+    </data>
+</odoo>

@@ -1,0 +1,86 @@
+<odoo>
+    <template id="factura_preimpresa" >
+        <style>
+            tr.spaceUnder>td {
+                padding-bottom: 1em;
+            }
+            td{
+                text-align:center;
+            }
+            .codigo{
+                font-size:10px;
+            }
+        </style>
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="header" style="padding-top:5%;background-color:transparent !important;background: transparent !important;">
+                    <div class="row">
+                        <div class="col-12">
+                            <table width="87%" style="margin-bottom: 2em;">
+                                <tr>
+                                    <td width="60%" style="font-size:13px;text-align:center"><t t-esc="doc.invoice_partner_display_name"/></td>
+                                    <td width="20%" style="font-size:13px;text-align:right"><t t-esc="doc.partner_id.vat"/></td>
+                                    <td width="20%" style="font-size:13px;text-align:right"><t t-esc="doc.date"/></td>
+                                </tr>
+                            </table>
+                            <table width="87%" style="margin-bottom: 2em;">
+                                <tr>
+                                    <td width="60%" style="font-size:13px;text-align:center"><t t-esc="doc.partner_id.street"/></td>
+                                    <td width="20%" style="font-size:13px;text-align:right"><t t-esc="doc.partner_id.phone"/></td>
+                                    <td width="20%" style="font-size:13px;text-align:right"><t t-esc="doc.invoice_date_due"/></td>
+                                </tr>
+                            </table>
+                            <table width="87%" style="margin-bottom: 1em;">
+                                <tr>
+                                    <td  style="font-size:13px;text-align:center"></td>
+                                    <td  style="font-size:13px;text-align:right"><t t-esc="doc.partner_id.ref"/></td>
+                                    <td  style="font-size:13px;text-align:right"><t t-esc="doc.invoice_payment_term_id.name"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" style="padding-top:10%">
+                    <div class="row mt-5">
+                        <div class="col-12" style="height:370px;">
+                            <table width="90%" >
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td width="10%" style="font-size:10px;"><t t-esc="line.product_id.default_code"></t></td>
+                                        <td width="20%"><t t-esc="line.product_id.name"></t></td>
+                                        <td width="20%"></td>
+                                        <td width="20%"></td>
+                                        <td width="10%"><t t-esc="line.quantity"/></td>
+                                        <td width="10%"><t t-esc="doc.currency_id.symbol"/><t t-esc="line.price_unit"/></td>
+                                        <td width="10%"><t t-esc="doc.currency_id.symbol"/><t t-esc="line.price_subtotal"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                        <div style="text-align:right; width:90%">
+                            <t t-esc="doc.amount_untaxed"/>
+                            <t t-esc="doc.currency_id.symbol"/>
+                            <br/>
+                            <t t-if="doc.amount_by_group">
+                                <t t-esc="doc.amount_by_group[0][3]"/>
+                            </t>
+                            <br/>
+                            <t t-esc="doc.amount_residual"/>
+                            <t t-esc="doc.currency_id.symbol"/>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        string="Factura Preimpresa"
+        id="action_factura_preimpresa"
+        model="account.move"
+        report_type="qweb-pdf"
+        name="factura_preimpresa.factura_preimpresa"
+        file="factura_preimpresa.factura_preimpresa"
+    />
+</odoo>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+       <template id="internal_layout_lax_check">
+        <!-- Multicompany -->
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header">
+
+       </div>
+        <div class="article">
+          <t t-raw="0" />
+        </div>
+
+        <div class="footer">
+        </div>
+    </template>
+
+
+    <template id="report_check_bi">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <t t-call="payment_voucher_custom.internal_layout_lax_check">
+                        <!-- check design -->
+                      <div style="font-size:13px">
+                      <div class="row" >
+                      </div>
+                   </div>
+
+<style type="text/css">
+
+/* Arvo */
+@font-face {
+  font-family: 'Arvo';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arvo'), url(http://fonts.gstatic.com/s/arvo/v8/MViwy4K6e56oHcyeMzjbCQ.ttf) format('truetype');
+}
+
+</style>
+
+
+ 
+
+              <table width="100%">
+                 <thead>
+                    <tr>
+                        <td width="38px" height="30px"/>
+                        <td width="380px">
+                            <span t-field="o.company_id.city"/>, <span t-esc="o.fecha_letras()"/>
+                        </td>
+                        <td/>
+                        <td width="200px"><span t-esc="'{:,.2f}'.format(o.amount)"/></td>
+                    </tr>
+                    <tr>
+                        <td width="38px" height="30px"/>
+                        <td colspan="3"><span t-field="o.partner_id.name"/></td>
+                        
+                    </tr>
+                    <tr>
+                       <td width="39px" height="30px"/>
+                       <td colspan="3">**<span t-esc="o.get_amount_in_word()"/> **</td>
+                    </tr>
+                    <tr>
+                       <td width="38px" height="30px"/>
+                       <td><br/><t t-if="o.is_negociable == 'no_negociable'"><span t-field="o.is_negociable"/></t></td>
+                       <td/>
+                       <td/>
+                    </tr>
+                    
+                 </thead>
+              </table>
+
+
+              <table width="100%" style="margin-top: 250px">
+                  <tr>
+                      <td width="20px" height="30px"/>      
+                      <td><span t-field="o.company_id.name"/></td>
+
+                  </tr>
+                  <tr>
+                      <td height="30px"/>
+                      <td>
+                        <span t-field="o.journal_id.name"/> / <span t-field="o.journal_id.bank_account_id.acc_number"/>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td height="30px"/>
+                      <td><span t-field="o.partner_id"/></td>
+                  </tr>
+                  <tr>
+                      <td height="30px"/>
+                      <td><span t-field="o.check_number"/> / <span t-field="o.other_reference"/></td>
+                  </tr>
+              </table>
+
+              <br/>
+              <table width="100%" style="margin-left:20px" class="table table-sm">
+                  <thead>
+                    <th>Cuenta</th>
+                    <th>Referencia</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
+                  </thead>
+                  <tr t-foreach="o.move_line_ids " t-as="l">
+                      <td><span t-field="l.account_id"/></td> 
+                      <td><span t-field="l.name"/></td>       
+                      <td class="text-right"><span t-field="l.debit"/></td>
+                      <td class="text-right"><span t-field="l.credit"/></td>
+                  </tr>
+              </table>
+
+
+            </t>
+            </div>
+            </t>
+        </t>
+    </template>
+</odoo>

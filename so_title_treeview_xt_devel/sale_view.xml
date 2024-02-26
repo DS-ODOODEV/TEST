@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+<record id="view_order_tree_devel" model="ir.ui.view">
+    <field name="name">quotation_title.sale_order_tree_devel</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_tree"/>
+    <field name="arch" type="xml">
+        <field name="partner_id" position="before">
+            <field name="project_title" optional="show"/>
+        </field>
+    </field>
+</record>
+
+<record id="view_quotation_tree_devel" model="ir.ui.view">
+    <field name="name">quotation_title.quotation_tree_devel</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree"/>
+    <field name="arch" type="xml">
+        <field name="partner_id" position="before">
+            <field name="project_title" optional="show"/>
+        </field>
+    </field>
+</record>
+
+</odoo>

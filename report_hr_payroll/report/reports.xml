@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_hr_payroll_format" model="report.paperformat">
+        <field name="name">Reporte de Nomina</field>
+        <field name="default" eval="True"/>
+        <field name="format">Legal</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <record id="action_report_hr_payroll" model="ir.actions.report">
+        <field name="model">hr.payslip.run</field>
+        <field name="name">Reporte de Nomina</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">report_hr_payroll.report_hr_payroll_document</field>
+        <field name="report_file">report_hr_payroll.report_hr_payroll_document</field>
+        <field name="print_report_name">'Reporte de Nomina '</field>
+        <field name="paperformat_id" ref="report_hr_payroll.report_hr_payroll_format"/>
+        <field name="attachment_use" eval="False"/>
+    </record>
+
+</odoo>

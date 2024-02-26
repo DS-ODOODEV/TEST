@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+	<record id="crm_lead_form_viewi_inherit" model="ir.ui.view">
+		<field name="name">crm.lead.form.view.inherit</field>
+		<field name="model">crm.lead</field>
+		<field name="inherit_id" ref="crm.crm_lead_view_form" />
+		<field name="arch" type="xml">
+            <field name="company_currency" position="after">
+                <field name="currency_display" invisible="1"/>
+            </field>
+            <field name="planned_revenue" position="replace">
+                <field name="planned_revenue" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_display'}"/>
+            </field>
+		</field>
+	</record>
+
+
+	<record id="crm_lead_kanaban_view_inherit" model="ir.ui.view">
+		<field name="name">crm.lead.kanban.view.inherit</field>
+		<field name="model">crm.lead</field>
+		<field name="inherit_id" ref="crm.crm_case_kanban_view_leads" />
+		<field name="arch" type="xml">
+			<xpath expr="/kanban/field[@name='company_currency']" position='after'>
+                 <field name="currency_display" />
+            </xpath>
+			<xpath expr="/kanban/templates/t/div/div[2]/div[3]/t/field[@name='planned_revenue']" position='replace'>
+                 <field name="planned_revenue" class="oe_inline" widget="monetary" options="{'currency_field': 'currency_display'}"/>
+            </xpath>
+		</field>
+	</record>
+</odoo>

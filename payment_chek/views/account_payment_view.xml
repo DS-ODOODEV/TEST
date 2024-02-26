@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model='ir.ui.view' id='view_check_powertech'>
+		<field name='name'>check.form.powertech</field>
+		<field name='model'>account.payment</field>
+		<field name='inherit_id' ref='account.view_account_payment_form'/>
+		<field name='arch' type='xml'>
+			<field name="payment_date" position="after">
+				<field name = "is_negociable" attrs="{'invisible': [('payment_method_code', '=', 'manual')], 'readonly': [('state', '!=', 'draft')]}"/>
+			</field>
+			<field name="communication" position="after">
+				<field name="other_reference" attrs="{'invisible': [('payment_method_code', '=', 'manual')], 'readonly': [('state', '!=', 'draft')]}"/>
+			</field>
+		</field>
+	</record>
+</odoo>
+

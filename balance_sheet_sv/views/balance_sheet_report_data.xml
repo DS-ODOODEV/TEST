@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_balance_sheet_report" model="ir.actions.client">
+            <field name="name">Balance de Situación SV</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'balance.sheet.sv'}"/>
+        </record>
+
+        <menuitem id="menu_action_balance_sheet" name="Balance de Situación SV"
+                  action="action_balance_sheet_report"
+                  parent="account.account_reports_legal_statements_menu" sequence="7"
+                  groups="balance_sheet_sv.group_reports_sv"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>  
+        <template id="header_hr_payroll_tmpl">
+            <style>
+                .main-table {
+                    width: 100%;
+                }
+                .row {
+                    height: 25px;
+                }
+                .columna {
+                    width: 25%;
+                }
+                .columnb {
+                    width: 100%;
+                    padding-left: 12px;
+                    font-size: 12px; 
+                    font-family:"Courier New", Courier, monospace;
+                }
+            </style>
+            <table class="main-table">
+                <tr class="row">
+                    <!--<td class="columna" rowspan="4">
+                        <img t-if="docs.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(docs.company_id.logo)" style="max-height: 120px; margin-left:120px; margin-top: 5px" alt="Logo" />
+                    </td>-->
+                    <td class="columnb">
+                        <span style="font-size: 18px; font-weight: bold;" t-esc="company_name"/>
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="columnb">
+                        <span style="font-size: 14px; font-weight: bold;" t-esc="report_title"/>
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="columnb">
+                        <span style="font-size: 14px; font-weight: bold;">Expresado en</span>
+                        <span style="font-size: 14px; font-weight: bold;" t-esc="currency_name"/>
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="columnb">
+                        <span style="font-size: 14px; font-weight: bold;" t-esc="report_type"/>
+                    </td>
+                </tr>
+                </table>
+        </template>
+    </data>
+</odoo>

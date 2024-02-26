@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_reports_sv" model="res.groups">
+        <field name="name">Reportes El Salvador</field>
+        <field name="comment">Reportes El Salvador</field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="external_layout_exportacion">
+		<!-- Multicompany -->
+		<t t-if="not o and doc">
+			<t t-set="o" t-value="doc"/>
+		</t>
+		<t t-if="o and 'company_id' in o">
+			<t t-set="company" t-value="o.company_id"></t>
+		</t>
+		<t t-if="not o or not 'company_id' in o">
+			<t t-set="company" t-value="res_company"></t>
+		</t>
+		<t t-call="devel_invoice_es_comprobante_credito_fiscal.external_layout_header_custom_exportacion" />
+		<t t-raw="0" />
+		<t t-call="devel_invoice_es_comprobante_credito_fiscal.external_layout_footer_custom_exportacion" />
+	</template>
+
+	<template id="external_layout_footer_custom_exportacion">
+		<div class="footer">
+		</div>
+	</template>
+
+	<template id="external_layout_header_custom_exportacion">
+		<div class="header">
+		</div>
+	</template>
+
+	<record id="paperformat_exportacion_es" model="report.paperformat">
+		<field name="name">Factura Exportacion ES</field>
+		<field name="default" eval="True"/>
+		<field name="format">custom</field>
+		<field name="page_height">279</field>
+		<field name="page_width">210</field>
+		<field name="orientation">Portrait</field>
+		<field name="margin_top">60</field>
+		<field name="margin_bottom">4.0</field>
+		<field name="margin_left">4</field>
+		<field name="margin_right">4</field>
+		<field name="header_line" eval="False" />
+		<field name="header_spacing">10</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<report
+		id="action_paperformat_exportacion_es"
+		model="account.move"
+		report_type="qweb-pdf"
+		string="Factura Exportacion"
+		name="devel_invoice_es_comprobante_credito_fiscal.exportacion_report"
+		file="devel_invoice_es_comprobante_credito_fiscal.exportacion"
+	/>
+
+	<record id="devel_invoice_es_comprobante_credito_fiscal.action_paperformat_exportacion_es" model="ir.actions.report">
+		<field name="paperformat_id" ref="devel_invoice_es_comprobante_credito_fiscal.paperformat_exportacion_es"/>
+	</record>
+
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_invoice_taxes_user,access_report_invoice_taxes_user,model_report_invoice_taxes,account.group_account_manager,1,1,1,1
+access_report_invoice_taxes_manager,access_report_invoice_taxes_manager,model_report_invoice_taxes,account_invoice_taxes_report.group_report_invoice_taxes,1,1,1,1

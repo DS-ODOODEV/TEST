@@ -1,0 +1,92 @@
+<odoo>
+    <template id="formatoHN_template" >
+       <t t-call="web.basic_layout">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="header">
+                         <t t-if="doc and 'company_id' in doc">
+                              <t t-set="company" t-value="doc.company_id"></t>
+                         </t>
+                         <t t-if="not doc or not 'company_id' in doc">
+                             <t t-set="company" t-value="res_company"></t>
+                         </t>
+                    </div>
+
+                    <div class="page">
+
+                        <table width="100%" style="margin-top:0px">
+                            <tr>
+                                <td width="10%"/>
+                                <td width="40%" class="text-right" style="height:31px; padding-left:75px; margin-top:0px"><t t-esc="doc.date.day"/><span><t t-esc="doc.date.month"/></span><span><t t-esc="doc.date.year"/></span></td>
+                                <td width="40%" class="text-right" style="height:31px; padding-left:75px; margin-top:0px"><t t-esc="invoice_payment_term_id"/><span><t t-esc="doc.date.month"/></span></td>
+                                <td width="20%"/>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="line-height: 1.5;padding-left: 31px;"><span>  </span> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding-left: 31px;"><span>  </span> </td>
+                            </tr>
+                            <tr>
+                                <td width="10%"/>
+                                <td width="90%" colspan="2" style="height:35px; padding-left: 30px;"><t t-esc="doc.invoice_partner_display_name"/></td>
+                            </tr>
+                            <tr>
+                                <td width="10%"/>
+                                <td width="70%" style="height:28px; padding-left: 30px;">
+                                    <t t-esc="doc.partner_id.street"/>  <t t-esc="doc.partner_id.street2"/> <t t-esc="doc.partner_id.street2"/>
+                                </td>
+                                <td width="10%" class="text-center" style="height:28px;"><t t-esc="doc.partner_id.vat"/></td>
+                            </tr>
+                        </table>
+                        <br/><br/>
+                        <br/>
+
+                        <div class="row" style="position:relative">
+                          <table width="100%" style="table-layout:fixed; position: absolute">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="15%"/>
+                                    <th class="text-center" width="65%"/>
+                                    <th class="text-right" width="25%"/>
+                                </tr>
+                            </thead>
+                            <tbody width="100%" style="height: 400px; margin-left: 40px;">
+                                <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                    <tr>
+                                        <td class="text-center" style="padding-left: 25px;"><t t-esc="'%.0f'% (line.quantity)"/></td>
+                                        <td class="text-left" style="padding-left: 33px;"><t t-esc="line.name"/></td>
+                                        <td class="text-right" style="padding-left: 30px;"><span t-field="doc.currency_id.symbol"/><span t-esc="'{:20,.2f}'.format(line.price_total)" t-esc-options="{'widget': 'monetary', 'display_currency': doc.pricelist_id.currency_id}"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                          </table>
+                        </div>
+                       	<div style="position:relative">
+                          	<table style="table-layout:fixed; position:relative; margin-top:808px; width:100%">
+                                <tr>
+                                    <th class="text-center" width="11%"/>
+                                    <td width="69%"><t t-esc="doc.text_amount"/></td>
+                                    <!--td width="20%" class="text-right" ><t t-esc="'%.2f'%(doc.amount_total)"/></td-->
+                                    <td width="20%" class="text-right" ><span t-field="doc.currency_id.symbol"/><span t-esc="'{:20,.2f}'.format(doc.amount_total)" t-esc-options="{'widget': 'monetary', 'display_currency': doc.pricelist_id.currency_id}"/></td>
+
+
+                                </tr>
+                          	</table>
+                        </div>
+
+
+                    </div><!--fin del div page-->
+                </t>
+            </t>
+        </t>
+    </template>
+    <report
+        string="Formato HN"
+        id="formatoHN_action"
+        model="account.move"
+        report_type="qweb-pdf"
+        name="formatoHN_template"
+        file="formatoHN_template"
+    />
+</odoo>

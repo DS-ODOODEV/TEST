@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="analytic" position="after">
+                <h2>Reporte de Impuestos de Facturas</h2>
+                <div class="row mt16 o_settings_container" id="invoice_tax_reports">
+                    <div class="col-12 col-lg-6 o_setting_box" title="Allows you to use the analytic accounting." groups="account.group_account_user">
+                        <div class="o_setting_left_pane"></div>
+                        <div class="o_setting_right_pane">
+                            <field name="tax_iva_id" class="oe_inline" widget="many2many_tags"/>
+                            <div class="text-muted">
+                                Impuestos para calculo del IVA
+                            </div>
+                            <field name="tax_ret_1_id" class="oe_inline" widget="many2many_tags"/>
+                            <div class="text-muted">
+                                Impuestos para calculo de Retenciones 1%
+                            </div>
+                            <field name="tax_ret_5_id" class="oe_inline" widget="many2many_tags"/>
+                            <div class="text-muted">
+                                Impuestos para calculo de Retenciones 5%
+                            </div>
+                            <!--Cuenta de retencio 5-->
+                            <field name="account_ret_5_id" class="oe_inline" widget="many2many_tags"/>
+                            <div class="text-muted">
+                                Cuenta contable para calculo de Retenciones 5%
+                            </div>
+                            <div class="mt8">
+                                <button name="update_invoice_taxes" icon="fa-arrow-right" type="object" string="Actualizar Impuestos" class="btn-link"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-12 col-lg-6 o_setting_box" groups="account.group_account_user">
+                        <div class="o_setting_left_pane">
+                            <field name="group_analytic_tags"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_analytic_tags"/>
+                            <div class="text-muted">
+                                Allows to tag analytic entries and to manage analytic distributions
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

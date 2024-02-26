@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_payslip_report,access.hr.payslip.report,model_hr_payslip_report,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payslip_report_lines,access.hr.payslip.report.lines,model_hr_payslip_report_lines,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_report_hr_slips,access.report.hr.slips,model_wizard_report_hr_slips,hr_payroll.group_hr_payroll_user,1,1,1,1

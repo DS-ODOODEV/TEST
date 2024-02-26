@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="nota_credito_template_document">
+            <t t-call="web.basic_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <div class="header"></div>
+                <div class="page">
+                    <style>
+                        td{
+                        border: 1px solid black;
+                        }
+                        th{
+                        border: 1px solid black;
+                        }
+                    </style>
+                    <div class="row">
+                        <div class="col-4">
+                            <img class="img-fluid" t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)"  alt="Logo" style="max-height:90px;"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1"/>
+                        <div class="col-5">
+                            <ul style="list-style-type: none;">
+                                <li style="font-size:20px;"><span t-field="o.company_id.name"/></li>
+                                <li><span t-field="o.company_id.street"/></li>
+                                <li><span t-field="o.company_id.street2"/></li>
+                                <li><span t-field="o.company_id.city"/>, <span t-field="o.company_id.country_id.name"/></li>
+                            </ul>
+                        </div>
+                        <div class="col-5">
+                            <ul style="list-style-type: none;">
+                                <li>TEL: <span t-field="o.company_id.phone"/></li>
+                                <li>Web: <span t-field="o.company_id.website"/></li>
+                                <li>email: <span t-field="o.company_id.email"/></li>
+                                <li><b>RTN: <span t-field="o.company_id.vat"/></b></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-1"/>
+                        <div class="col-5">
+                            <ul style="list-style-type: none;">
+                                <li><b>CAI: </b><span t-field="o.journal_id.numero_resolucion"/></li>
+                                <li><b>Fecha Límite de Emisión: </b><span t-field="o.journal_id.vencimiento_resolucion"/></li>
+                                <li><b>Rango del: </b><span t-field="o.journal_id.rango_documentos"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-center" style="border:1px solid black;">
+                            <h5>NOTA DE CREDITO</h5>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <b>NO: <span t-field="o.name" /></b>
+                            <br/>
+                            <b>Fecha de Emisión: <span t-field="o.invoice_date"/> </b>
+                            <br/>
+                            <b>SR: <span t-field="o.partner_id.name" /></b>
+                            <br/>
+                            <b>RTN: <span t-field="o.partner_id.vat"/> </b>
+                            <br/>
+                            <br/>
+                            <br/>
+                            Sírvase tomar en cuenta que esta fecha hemos ACREDITADO a su cuenta los valores anotados según descripción.
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <table width="100%" class="table table-sm" style="border 1px solid black;">
+                                <thead>
+                                    <tr style="border-top:1px solid black;">
+                                        <th class="text-center">NO</th>
+                                        <th class="text-center">DESCRIPCION</th>
+                                        <th class="text-center">MONTO TOTAL</th>
+                                        <th class="text-center">IMPUESTO ASOCIADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="cont" t-value="1"/>
+                                    <t t-set="total_cont" t-value="0"/>
+                                    <t t-set="total_cont_imp" t-value="0"/>
+                                    <t t-foreach="o.invoice_line_ids" t-as="line">
+                                        <tr>
+                                            <td><span t-esc="cont"/> </td>
+                                            <td><span t-field="line.name"/> </td>
+                                            <td><span t-field="line.price_subtotal"/></td>
+                                            <td>
+                                                <span t-esc="round((line.price_total - line.price_subtotal),2)"/>
+                                            </td>
+                                            <t t-set="total_cont" t-value="total_cont + line.price_subtotal"/>
+                                            <t t-set="total_cont_imp" t-value="total_cont_imp + line.price_total - line.price_subtotal"/>
+                                        </tr>
+                                        <t t-set="cont" t-value="cont + 1"/>
+                                    </t>
+                                    <tr>
+                                        <td colspan="3">Totales</td>
+                                        <td class="text-center"><span t-esc="round((total_cont_imp+total_cont),2)"/> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-12">
+                            <span>Son: <t t-esc="o.text_amount"/></span>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-5">
+                            Motivo de la emisión de la NOTA DE CREDITO:
+                        </div>
+                        <div class="col-7">
+                            <table width="100%" cellspacing="10">
+                                <tr>
+                                    <td style="border: 1px solid black; color: white;">
+                                        111<t t-if="o.nc_type == 'anulacion'"><span style="color:black;">X</span></t>111
+                                    </td>
+                                    <td>ANULACION </td>
+                                    <td style="border: 1px solid black; color: white;">
+                                        111<t t-if="o.nc_type == 'devolucion'"><span style="color:black;">X</span></t>111
+                                    </td>
+                                    <td>DEVOLUCION </td>
+                                    <td style="border: 1px solid black; color: white;">
+                                        111<t t-if="o.nc_type == 'descuento'"><span style="color:black;">X</span></t>111
+                                    </td>
+                                    <td>DESCUENTO</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:160px;">
+                        <div class="col-3"/>
+                        <div class="col-6 text-center" style="border-top:1px solid black;">
+                            FIRMA
+                        </div>
+                        <div class="col-3"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="nota_credito_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="nota_credito_hn.nota_credito_template_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

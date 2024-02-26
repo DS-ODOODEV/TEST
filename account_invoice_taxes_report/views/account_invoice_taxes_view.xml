@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_report_invoice_taxes_tree" model="ir.ui.view">
+            <field name="name">view.report.invoice.taxes.tree</field>
+            <field name="model">report.invoice.taxes</field>
+            <field name="arch" type="xml">
+                <tree string="Reporte Impuestos de Facturas" create="false" edit="false">
+                    <field name="invoice_date"/>
+                    <field name="move_id"/>
+                    <field name="journal_id" optional="hide"/>
+                    <field name="partner_id" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                    <field name="currency_id" groups="base.group_multi_currency" optional="hide"/>
+                    <field name="amount_untaxed" sum="Total"/>
+                    <field name="amount_iva" sum="Total"/>
+                    <field name="amount_with_iva" sum="Total"/>
+                    <field name="amount_ret_1" sum="Total"/>
+                    <field name="amount_ret_5" sum="Total"/>
+                    <field name="amount_total" sum="Total"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_report_invoice_taxes_search" model="ir.ui.view">
+            <field name="name">report.invoice.taxes.search</field>
+            <field name="model">report.invoice.taxes</field>
+            <field name="arch" type="xml">
+                <search string="Reporte Impuestos de Facturas">
+                    <field name="move_id" operator="child_of"/>
+                    <field name="partner_id" operator="child_of"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="Fecha" name="group_by_invoice_date" context="{'group_by': 'invoice_date'}"/>
+                        <filter string="Diario" name="group_by_journal" context="{'group_by': 'journal_id'}"/>
+                        <filter string="Cliente" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Moneda" name="group_by_currency" context="{'group_by': 'currency_id'}" groups="base.group_multi_currency"/>
+                        <filter string="Compañía" name="group_by_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+       <record id="action_report_invoice_taxes" model="ir.actions.act_window">
+            <field name="name">Reporte Impuestos de Facturas</field>
+            <field name="res_model">report.invoice.taxes</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="view_report_invoice_taxes_search"/>
+            <field name="context">{'search_default_group_by_invoice_date': 1}</field>
+            <field name="help"></field>
+        </record>
+
+        <menuitem 
+            action="action_report_invoice_taxes" 
+            id="menu_report_invoice_taxes" 
+            name="Reporte Impuestos de Facturas" 
+            parent="account.menu_finance_receivables" 
+            sequence="9" 
+            groups="account_invoice_taxes_report.group_report_invoice_taxes"/>
+
+</odoo>

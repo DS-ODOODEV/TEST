@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+    <report
+        id="action_report_check_bi"
+        model="account.payment"
+        string="Voucher Cheque"
+        report_type="qweb-pdf"
+        name="payment_voucher_custom.report_check_bi"
+        file="payment_voucher_custom.report_check_bi"
+    />
+   
+    <record id="action_report_check_bi_repot" model="report.paperformat">
+            <field name="name">pdf Check BI New</field>
+            <field name="default" eval="True"/>
+            <field name="format">Letter</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">12</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">15</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('action_report_check_bi'))]"/>
+        </record>
+
+</odoo>

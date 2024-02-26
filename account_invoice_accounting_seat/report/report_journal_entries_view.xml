@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+
+		<template id="journal_entry_template_report_view">
+			<t t-call="web.external_layout">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+                <div class="page" style="color:black;">
+                    <br/><br/>
+                    <div class="oe_structure"/>
+                        <div style="color:black; font-size:12pt;">
+                            <div class="text-center">
+                              <strong><span t-esc="o.company_id.name.upper()"/></strong>
+                              <p>PARTIDAS DE DIARIO</p>
+                              <p style="margin-top:-15px;"><span t-esc="o._get_months(o.date).upper()"/> <span t-esc="o.date.strftime('%Y')"/></p>
+                          </div>
+                        </div>
+                    <br/>
+
+                <div class="row" id="journal_information">
+                    <div class="col-8">
+                        <div class="text-left">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <td style="margin:0px; padding:0px; width:175px;"><strong>Número de Partida</strong></td>
+                                        <td style="margin:0px; padding:0px;"><span t-field="o.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin:0px; padding:0px; width:175px;"><strong>Fecha de partida</strong></td>
+                                        <td style="margin:0px; padding:0px;"><span t-field="o.date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin:0px; padding:0px; width:175px;"><strong>Tipo de Partida</strong></td>
+                                        <td style="margin:0px; padding:0px;"><span t-field="o.journal_id"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="margin:0px; padding:0px; width:175px;"><strong>Concepto General</strong></td>
+                                        <td style="margin:0px; padding:0px;"><span t-field="o.ref"/></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>  
+                </div>
+               
+
+               <br/><br/>
+                <table style="border-collapse: collapse;width: 100%;" class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="margin:3px;padding:3px;">Código</th>
+                            <th style="margin:3px;padding:3px;">Cuenta</th>
+                            <th style="margin:3px;padding:3px;">Concepto</th>
+                            <th style="margin:3px;padding:3px;">Debe</th>
+                            <th style="margin:3px;padding:3px;">Haber</th>
+                        </tr>
+                    </thead>  
+                    <tbody class="consumed_tbody">
+                        <t t-set="total" t-value="0.0"/>
+                        <t t-set="total1" t-value="0.0"/>
+                        <t t-foreach="o.line_ids" t-as="line">    
+                        <tr>
+                            <td style="margin:3px;padding:3px;">
+                                <span t-field="line.account_id.code"/>
+                            </td>
+                            <td style="margin:3px;padding:3px;">
+                                <span t-field="line.account_id.name"/>
+                            </td>
+                            <td style="margin:3px;padding:3px;">
+                                <span t-field="line.name"/>
+                            </td>
+                            <td style="margin:3px;padding:3px;">
+                                <span t-field="line.debit"/>
+                            </td>
+                            <td style="margin:3px;padding:3px;">
+                                <span t-field="line.credit"/>
+                            </td>
+                        </tr>
+                        <t t-set="total" t-value="total + line.debit"/>
+                        <t t-set="total1" t-value="total1 + line.credit"/>
+                        </t>
+                        <tr>
+                            <td style="margin:3px;padding:3px;"/>
+                            <td style="margin:3px;padding:3px;"/>
+                            <td style="margin:3px;padding:3px;"><strong>Total:</strong></td>
+                            <td  style="margin:3px;padding:3px;" width="10%"><strong>
+                                <span><span t-field="o.company_id.currency_id.symbol"/> <t t-esc="'{0:,.2f}'.format(total)"/></span>
+                            </strong></td>
+                             <td  style="margin:3px;padding:3px;" width="10%"><strong>
+                                <span><span t-field="o.company_id.currency_id.symbol"/> <t t-esc="'{0:,.2f}'.format(total1)"/></span>
+                            </strong></td>
+                      </tr>
+                    </tbody>
+                </table>
+              
+                <div class="row mt-5" id="journal_information" >
+                    <div class="col-12 text-center" style="margin-top:40px; margin-left:95px;">
+                        <div class="col-3 text-center float-left">
+                          <p style="border-top:1px solid black;">Hecho Por</p>
+                        </div>
+                        <div class="col-3 text-center float-left">
+                          <p style="border-top:1px solid black;">Revisado Por</p>
+                        </div>
+                        <div class="col-3 text-center float-left">
+                          <p style="border-top:1px solid black;">Autorizado Por</p>
+                        </div>
+                    </div>  
+                </div>
+               
+                </div>
+            </t>
+		</template>
+
+		<template id="journal_entry_report_template_id">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="account_invoice_accounting_seat.journal_entry_template_report_view"  t-lang="o.partner_id.lang"/>
+				</t>
+			</t>
+		</template>
+
+	</data>
+</odoo>

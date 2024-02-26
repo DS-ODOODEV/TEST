@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="action_bank_balance_report" model="ir.actions.client">
+            <field name="name">Reporte de Saldos de Bancos</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'bank.balance.report'}"/>
+        </record>
+
+        <menuitem id="menu_bank_balance_report"
+                  name="Reporte de Saldos de Bancos"
+                  action="action_bank_balance_report"
+                  parent="account_reports.account_reports_partners_reports_menu"
+                  sequence="7"/>
+    </data>
+</odoo>

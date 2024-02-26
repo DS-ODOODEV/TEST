@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<template id="report_factura_consumidor_final_template">
+
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="devel_invoice_es_comprobante_credito_fiscal.external_layout_factura_consumidor_final">
+						<div class="page">
+
+							<style>
+								.encabezado{
+								margin-bottom:5px;
+								}
+								.texto_blanco{
+								color:white;
+								}
+								.encabezado table tr {
+								}
+								.contenido table {
+								width:100%;
+								}
+								.lineas{
+								height:520px !important;
+								}
+								.contenido table thead tr {
+								text-align:center;
+								}
+								.contenido table tbody {
+								}
+							</style>
+
+							<div class="encabezado" >
+								<table width="100%">
+									<tr><td><span class="texto_blanco">Fecha:</span> <span t-field="o.invoice_date" /></td></tr>
+									<tr><td><span class="texto_blanco">Cliente:</span> <span t-field="o.partner_id.name" /></td></tr>
+									<tr><td><span class="texto_blanco">Direccion:</span> <span t-field="o.partner_id.street" /></td></tr>
+									<tr><td><span class="texto_blanco">DUI o NIT:</span> <span t-field="o.partner_id.vat" /></td></tr>
+								</table>
+							</div>
+							<div class="contenido" style="min-height:600px">
+								<table class="lineas" style="min-height:600px;">
+									<thead>
+										<tr>
+											<th width="5%" class="texto_blanco">Cant.</th>
+											<th width="55%" class="texto_blanco">Descripcion</th>
+											<th width="10%" class="texto_blanco">Precio Unitario</th>
+											<th width="10%" class="texto_blanco">Ventas no Sujetas</th>
+											<th width="10%" class="texto_blanco">Ventas Extentas</th>
+											<th width="10%" class="texto_blanco">Ventas Gravadas</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr t-foreach="o.invoice_line_ids" t-as="l" style="border-top: 1px;">
+											<td class="text-center tablecell">
+												<value value-decimals="0" value-autoint="on">
+													<t t-esc="'%.0f'%(l.quantity)"/>
+												</value>
+											</td>
+											<td align="left"  class="text-left tablecell">
+												<span t-field="l.name"/>
+											</td>
+											<td class="text-right tablecell">
+												<span t-field="l.price_unit"/>
+											</td>
+											<td class="text-right tablecell" style="border-right:white 1px solid !important;">
+												<span t-field="l.price_subtotal"/>
+											</td>
+											<td class="text-right tablecell" style="border-right:white 1px solid !important;">
+												<span t-field="l.price_subtotal"/>
+											</td>
+											<td class="text-right tablecell" style="border-right:white 1px solid !important;">
+												<span t-field="l.price_subtotal"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="resultados">
+									<tr>
+										<td width="60%">
+											<table class="resizquierda">
+												<tr>
+													<td colspan="2" rowspan="2">
+														Son:
+													</td>
+													<td></td>
+												</tr>
+												<tr></tr>
+												<tr>
+													<td colspan="2" style="text-align:center;">PARA OPERACIONES CON VALOR IGUAL O SUPERIOR A $200</td>
+												</tr>
+												<tr>
+												</tr>
+											</table>
+										</td>
+										<td width="40%">
+											<table class="resderecho">
+												<tr>
+													<td class="texto_blanco">SUMAS</td>
+													<td style="text-align:right;"><span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+												</tr>
+												<tr>
+													<td class="texto_blanco">VENTAS NO SUJETAS</td>
+												</tr>
+												<tr>
+													<td class="texto_blanco">VENTAS EXENTAS</td>
+												</tr>
+												<tr>
+													<td class="texto_blanco">SUBTOTAL</td>
+													<td style="text-align:right;"><span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+												</tr>
+												<tr>
+													<td class="texto_blanco">IVA RETENIDO</td>
+													<t t-foreach="o.amount_by_group" t-as="amount_by_group">
+														<td>
+															<span t-esc="amount_by_group[3]" />
+														</td>
+													</t>
+												</tr>
+												<tr>
+													<td class="texto_blanco">VENTA TOTAL</td>
+													<td style="text-align:right;"><span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+
+		<template id="factura_consumidor_final_report">
+			<t t-call="web.html_container">
+				<t t-call="web.internal_layout">
+					<t t-foreach="docs" t-as="o">
+						<t t-set="lang" t-value="o.user_id.lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+						<t t-call="devel_invoice_es_comprobante_credito_fiscal.report_factura_consumidor_final_template" t-lang="o.partner_id.lang"/>
+					</t>
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

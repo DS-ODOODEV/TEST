@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--HR PaySlip Run Extends-->
+    <record id="hr_payslip_run_form_extends" model="ir.ui.view">
+        <field name="name">hr.payslip.run.form.extends</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Recompute" name="recompute_payslip" type="object" states="draft"/>
+                <button string="Generate Reporte" name="action_generate_excel" type="object"/>
+                <button string="Imprimir PDF" name="print_report_payroll" type="object"/>
+            </xpath>    
+        </field>
+    </record>
+    
+    <record id="view_hr_payslip_run_form_inherit" model="ir.ui.view">
+        <field name="name">view.hr.payslip.run.form.inherit</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='credit_note']" position="after">
+                <field name="report_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                <field name="file_name" invisible="1"/>
+                <field name="file" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!--HR Payslip Report-->
+    <record id="hr_payslip_report_view_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.report.view.tree</field>
+        <field name="model">hr.payslip.report</field>
+        <field name="arch" type="xml">
+            <tree string="Payslip Report Settings">
+                <field name="name" />
+                <field name="active" />
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_payslip_report_view_form" model="ir.ui.view">
+        <field name="name">hr.payslip.report.view.form</field>
+        <field name="model">hr.payslip.report</field>
+        <field name="arch" type="xml">
+            <form string="Payslip Report Settings">
+                <sheet>
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="active" />
+                            <field name="struct_id" />
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="show_wage" />
+                            <field name="show_workdays" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="page_report_columns" string="Report Columns">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="column_name" />
+                                    <field name="operation" />
+                                    <field name="rule_ids" widget="many2many_tags" domain="[('struct_id', '=', parent.struct_id)]"/>
+                                    <field name="column_width"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_payslip_report_action" model="ir.actions.act_window">
+        <field name="name">Payslip Report Settings</field>
+        <field name="res_model">hr.payslip.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p>Create new Payslip Report Settings</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hr_payslip_report" name="Payslip Report Settings" action="hr_payslip_report_action" parent="hr_payroll.menu_hr_payroll_configuration" sequence="10"/>
+
+</odoo>

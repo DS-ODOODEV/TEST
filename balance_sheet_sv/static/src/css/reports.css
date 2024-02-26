@@ -1,0 +1,31 @@
+tr {
+    border: none !important;
+}
+
+td span {
+    font-size: 14px;
+    line-height: 26px;
+}
+
+tr.header_company span {
+    font-size: 22px;
+}
+
+tr.header td span {
+    font-size: 17px;
+}
+
+td.title span {
+    font-size: 16px;
+    text-decoration: underline;
+    font-weight: 900;
+     line-height: 34px;
+}
+td.total {
+    border-bottom: 2px solid black;
+}
+
+td.total_end {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}

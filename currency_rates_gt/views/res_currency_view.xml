@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+
+	<record id="inherit_res_curremcy_form_view" model="ir.ui.view">
+		<field name="name">inherit.res.currecy.tree.view</field>
+		<field name="model">res.currency</field>
+		<field name="inherit_id" ref="base.view_currency_form" />
+		<field name="arch" type="xml">
+			<field name="currency_subunit_label" position="after">
+                <field name="active_webservice"/>
+			</field>
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="get_currency_rate" string="Tipo de Cambio -BANGUAT-" type="object" class="oe_highlight"/>
+                </header>
+            </xpath>
+		</field>
+	</record>
+
+</odoo>

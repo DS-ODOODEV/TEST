@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_hr_payroll_document">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <!--<link href="/treming_gt_fiscal_book/static/src/css/style.css" rel="stylesheet"/>-->
+                    <style>
+                        .values-table {
+                            width: 100%;
+                            font-size: 12px; 
+                            font-family:"Courier New", Courier, monospace;
+                        }
+                        .th-a {
+                            width: 22mm;
+                            text-align: center;
+                            vertical-align: middle;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .th-col {
+                            width: 8mm;
+                            text-align: center;
+                            vertical-align: middle;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .td-name {
+                            width: 22mm;
+                            text-align: left;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .td-amount {
+                            width: 8mm;
+                            text-align: right;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .td-subotal {
+                            width: 8mm;
+                            text-align: right;
+                            font-weight: bold;
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                        }
+                        .td-depto {
+                            width: 8mm;
+                            text-align: left;
+                            font-size: 14px; 
+                            font-weight: bold;
+                            text-decoration: underline;
+                        }
+                    </style>
+                    <t t-call="report_hr_payroll.header_hr_payroll_tmpl"/>
+                    <!--Values data-->
+                    <br/>
+                    <table class="values-table">
+                        <thead>
+                            <tr>
+                                <th class="th-a">
+                                    Departamento/Empleado
+                                </th>
+                                <t t-foreach="headers" t-as="column">
+                                    <th class="th-col">
+                                        <span t-esc="column"/>
+                                    </th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="values" t-as="row">
+                                <!--Depto-->
+                                <t t-if="row.get('type', False) == 'depto'">
+                                    <tr>
+                                        <td class="td-depto">
+                                            <span t-esc="row.get('depto', '')"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <!--Line-->
+                                <t t-if="row.get('type', False) == 'line'">
+                                    <tr>
+                                        <td class="td-name">
+                                            <span t-esc="row.get('depto', '')"/>
+                                        </td>
+                                        <t t-set="rx" t-value="0"/>
+                                        <t t-foreach="row.get('colums', [])" t-as="line">
+                                            <t t-set="rx" t-value="rx + 1"/>
+                                            <t t-set="key" t-value="'col{}'.format(rx)"/>
+                                            <td class="td-amount">
+                                                <span t-esc="line[key]" t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                                <!--Subtotal-->
+                                <t t-if="row.get('type', False) == 'subtotal'">
+                                    <tr>
+                                        <td class="td-name">
+                                            <span/>
+                                        </td>
+                                        <t t-set="rx" t-value="0"/>
+                                        <t t-foreach="headers" t-as="line">
+                                            <t t-set="rx" t-value="rx + 1"/>
+                                            <t t-set="key" t-value="'col{}'.format(rx)"/>
+                                            <td class="td-subotal">
+                                                <t t-set="subtotal" t-value="sum(row[key])"/>
+                                                <span t-esc="subtotal" t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

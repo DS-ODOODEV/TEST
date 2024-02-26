@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_purchase_book">
+        <t t-call="web.html_container">
+            <t t-call="report_ventas_compras.external_layout_ab">
+                <div class="page">
+                    <style type="text/css">
+                        .table-x thead th {
+                        border: 1px solid #dee2e6;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                        font-size:16px;
+                        }
+                        .table-x tbody td {
+                        font-size: 11px;border-right:
+                        1px solid #dee2e6;
+                        border-right:1px solid #dee2e6 !important;
+                        border-left:1px solid #dee2e6 !important;
+                        border-top:0 !important;
+                        border-bottom:0 !important;
+                        padding-top: 2px;
+                        padding-bottom: 1px;
+                        }
+                        .table-x tbody tr {
+                        border: 0 !important
+                        }
+                        .table-x tbody td.total {
+                        border-top: 1px solid #dee2e6 !important;
+                        border-right: none !important;
+                        border-left: none !important;
+                        font-size: 14px;
+                        font-weight:bold;
+                        }
+                        .border-x {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        }
+                    </style>
+                    <t t-value="ultima" t-set="final"/>
+                    <t t-set="sum_bien_gravado" t-value="0.0"/>
+                    <t t-set="sum_serv_gravado" t-value="0.0"/>
+                    <t t-set="sum_comb_gravado" t-value="0.0"/>
+                    <t t-set="sum_pc" t-value="0.0"/>
+                    <t t-set="sum_i_gravado" t-value="0.0"/>
+                    <t t-set="sum_iva" t-value="0.0"/>
+                    <t t-set="sum_idp" t-value="0.0"/>
+                    <t t-set="sum_subtotal" t-value="0.0"/>
+                    <t t-foreach="data" t-as="folio">
+                        <h3 t-esc="company_id.name"/>
+                        <address t-field="company_id.partner_id"
+                                 t-options='{"widget": "contact", "fields": ["address", "phone"]}'/>
+                       <span t-esc="'NIT: {}'.format(company_id.vat)"/>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h5 t-esc="'Folio de correlativo: {}'.format(folio[0])"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <h3>LIBRO DE COMPRAS</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8 text-center">
+                                <h5 t-esc="date"/>
+                            </div>
+                        </div>Q
+                        <table class="text-center table table-condensed table-x">
+                            <thead>
+                                <tr>
+                                    <th class="title-border-x" rowspan="2">No.</th>
+                                    <th class="title-border-x" rowspan="2">Fecha de<br/>Emisión
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Nombre del Proveedor</th>
+                                    <th class="title-border-x" rowspan="2">NIT</th>
+                                    <th class="title-border-x" rowspan="2">Serie</th>
+                                    <th class="title-border-x" rowspan="2">N° de<br/>Documento
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Compra</th>
+                                    <th class="title-border-x" rowspan="2">Servicios</th>
+                                    <th class="title-border-x" rowspan="2">Combustible</th>
+                                    <th class="title-border-x" rowspan="2">Pequeño<br/>Contribuyente
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Importaciones</th>
+                                    <th class="title-border-x" rowspan="2" style="width:5%">IVA</th>
+                                    <th class="title-border-x" rowspan="2" style="width:5%">IDP</th>
+                                    <th class="title-border-x" rowspan="2" style="width:6%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="folio[1]" t-as="line">
+                                    <td class="border-x">
+                                        <span t-esc="line.get('no', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('fecha', '')"/>
+                                    </td>
+                                    <td class="border-x text-left">
+                                        <span t-esc="line.get('cliente', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('nit_cliente', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('serie', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('numero', '')"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('bienes_gravados', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('servicios_gravados', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('combustible_gravado', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('bienes_pc', '')+line.get('servicios_pc', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('bienes_i_gravados', '')+line.get('servicios_i_gravados', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('iva', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('idp', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(line.get('subtotal', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <t t-set="sum_bien_gravado"
+                                       t-value="sum_bien_gravado+line.get('bienes_gravados', 0.0)"/>
+                                    <t t-set="sum_serv_gravado"
+                                       t-value="sum_serv_gravado+line.get('servicios_gravados', 0.0)"/>
+                                    <t t-set="sum_comb_gravado"
+                                       t-value="sum_comb_gravado+line.get('combustible_gravado', 0.0)"/>
+                                    <t t-set="sum_pc"
+                                       t-value="sum_pc+line.get('bienes_pc', 0.0)+line.get('servicios_pc', 0.0)"/>
+                                    <t t-set="sum_i_gravado"
+                                       t-value="sum_i_gravado+line.get('bienes_i_gravados', 0.0)+line.get('servicios_i_gravados', 0.0)"/>
+                                    <t t-set="sum_iva" t-value="sum_iva+line.get('iva', 0.0)"/>
+                                    <t t-set="sum_idp" t-value="sum_idp+line.get('idp', 0.0)"/>
+                                    <t t-set="sum_subtotal" t-value="sum_subtotal+line.get('subtotal', 0.0)"/>
+                                </tr>
+                                <tr t-if="len(data) == folio[0]">
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_bien_gravado, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_serv_gravado, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_comb_gravado, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_pc, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_i_gravado, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_iva, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_idp, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-field="company_id.currency_id.symbol"/>
+                                        <span t-esc="format_price(sum_subtotal, company_id.currency_id)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <t t-if="folio[0] == len(data)">
+                            <br/>
+                            <div class="center-block">
+                                <style type="text/less">
+                                    .table-x {
+                                    .title-border-x {
+                                    border: 1px solid black !important;
+                                    text-align: center;
+                                    }
+                                    .border-x {
+                                    border: 1px solid black !important;
+                                    }
+                                    .no-border-x {
+                                    border: 0px !important;
+                                    }
+                                    .thead th {
+                                    border: 1px solid #dee2e6
+                                    }
+                                </style>
+                                <table class="text-center table-x" style="width: 85%;">
+                                    <tr>
+                                        <td>
+                                            <th class="border-x text-center">MONTO</th>
+                                            <th class="border-x text-center">IVA CRÉDITO</th>
+                                            <th class="border-x text-center">TOTAL</th>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL PEQUEÑO CONTRIBUYENTE</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_pc', 0.0)+final.get('total_serv_pc', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x"/>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_pc', 0.0)+final.get('total_serv_pc', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td style="width:15%"/>
+                                        <th class="text-left">FACTURAS RECIBIDAS</th>
+                                        <td>
+                                            <span t-esc="final.get('no_fac', 0)"/>
+                                        </td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL COMPRAS</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_g', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_g', 0.0)+final.get('total_bienes_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td style="width:15%"/>
+                                        <th class="text-left">FACTURAS ESPECIALES</th>
+                                        <td>0</td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL SERVICIOS</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_serv_g', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_serv_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_serv_g', 0.0)+final.get('total_serv_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td style="width:15%"/>
+                                        <th class="text-left">NOTAS DE CREDITO</th>
+                                        <td>0</td>
+                                        <td/>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL COMBUSTIBLE</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_comb_g', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_comb_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_comb', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td style="width:15%"/>
+                                        <th class="text-left">TOTAL DOCUMENTOS</th>
+                                        <td>
+                                            <span t-esc="final.get('no_fac', 0)"/>
+                                        </td>
+                                        <th class="text-left">TOTAL PROVEEDORES</th>
+                                        <td>
+                                            <span t-esc="final.get('no_partners', 0)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL IDP</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(sum_idp, company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(sum_idp, company_id.currency_id)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL IMPORTACION</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_impo_g', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_impo_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_impo', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-x text-left">TOTAL</th>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_bienes_pc', 0.0)+final.get('total_serv_pc', 0.0)
+                                            +final.get('total_bienes_g', 0.0)+final.get('total_serv_g', 0.0)
+                                            +final.get('total_comb_g', 0.0)+final.get('total_impo_g', 0.0)+sum_idp, company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_iva', 0.0), company_id.currency_id)"/>
+                                        </td>
+                                        <td class="border-x">
+                                            <span t-field="company_id.currency_id.symbol"/>
+                                            <span t-esc="format_price(final.get('total_total', 0.0)+sum_idp, company_id.currency_id)"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                        <div class="text-right">
+                            <t t-if="len(folio[1]) &lt; 24">
+                                <div t-foreach="range(1, 24-len(folio[1]))" t-as="i"
+                                     style="min-height:10px; width:100%"/>
+                            </t>
+                            <span t-esc="'Pág. {} de {}'.format(folio[0], len(data))"/>
+                        </div>
+                        <t t-if="folio[0] != len(data)">
+                            <div style="page-break-after: always;"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_ventas_compras.external_layout_ab">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <t t-raw="0"/>
+
+        <div class="header">
+
+        </div>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer">
+        </div>
+    </template>
+
+</odoo>

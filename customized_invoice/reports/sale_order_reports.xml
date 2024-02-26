@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+            <!--inherits the default sales report  and override its name  and file-->
+      <report 
+            id="sale.action_report_saleorder"
+            model="sale.order"
+            string="Quotation / Order"
+            report_type="qweb-pdf"
+            name="customized_invoice.sale_order"
+            file="customized_invoice.sale_order"
+      />
+    </data>
+</odoo>

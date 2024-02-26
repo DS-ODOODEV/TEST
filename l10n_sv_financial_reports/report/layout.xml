@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="footer_sv_tmp">
+        <div class="footer">
+            <div class="row">
+                <div class="col-12">
+                    <span style="float:left;margin-left:25px;font-size:14px;">Hecho Por:
+                        <b>
+                            <span t-field="doc.create_uid.name"/>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:115px;font-size:14px;">Mayoriado Por:
+                        <b>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:195px;font-size:14px;">Revisado Por:
+                        <b>
+                        </b>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <span style="float:left;margin-left:25px;font-size:14px;">Fecha y Hora de Generación:
+                        <b>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </b>
+                    </span>
+                    <span style="float:right;margin-right:25px;font-size:14px;">Página:
+                        <b>
+                            <span class="page"/>
+                        </b>
+                        de
+                        <b>
+                            <span class="topage"/>
+                        </b>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="header_sv_tmp">
+        <thead>
+            <tr class="title_tr">
+                <td colspan="6">
+                    <span class="to_upper" t-field="doc.company_id.name"/>
+                </td>
+            </tr>
+            <tr style="font-size: 13px; text-align: center;">
+                <td colspan="6">
+                    Partida de <![CDATA[&nbsp;]]><span t-if="doc.journal_id" t-field="doc.journal_id.name"/><![CDATA[&nbsp;]]>
+                    No.<![CDATA[&nbsp;]]><span class="to_upper" t-field="doc.internal_sequence_number"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%; text-align: left;" colspan="3">
+                    <strong>Fecha:</strong><span t-field="doc.date" t-options='{"format": "dd/MM/yyyy"}'/>
+                </td>
+                <td style="width: 50%; text-align: left;" colspan="3">
+                    <strong>Notas:</strong><span t-field="doc.ref"/>
+                </td>
+            </tr>
+            
+            <!--<tr>
+                <td colspan="3" class="company_from">
+                    Compañía de:
+                    <span t-field="company.partner_id.country_id"/>
+                </td>
+                <td colspan="3" class="amount_in">
+                </td>
+            </tr>-->
+            <tr style="border-top: 1px solid black; border-bottom: 1px solid black;">
+                <th style="width: 10%; text-align: center;">
+                    ID
+                </th>
+                <th style="width: 50%;  text-align: center;">
+                    Cuenta Contable
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Parcial
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Parcial
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Débito
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Crédito
+                </th>
+            </tr>
+        </thead>
+    </template>
+
+</odoo>
